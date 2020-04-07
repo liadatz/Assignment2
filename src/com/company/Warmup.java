@@ -22,6 +22,7 @@ public class Warmup {
 
     public static int consistentBinSearch(int[] arr, int x, Stack myStack) {
         int low = 0;
+        int temp;
         int high = arr.length;
         int middle = 0;
         while (low < high) {
