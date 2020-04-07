@@ -39,6 +39,7 @@ public class Warmup {
             else high = middle - 1;
         }
         return -1;
+
     }
 
     private static int isConsistent(int[] arr) {
