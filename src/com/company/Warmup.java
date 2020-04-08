@@ -21,24 +21,41 @@ public class Warmup {
     }
 
     public static int consistentBinSearch(int[] arr, int x, Stack myStack) {
-        int low = 0;
-        int check = 0;
-        int high = arr.length;
-        int middle = 0;
-        while (low < high) {
-            int isCon = isConsistent(arr);
-            if (isCon > 0) {
-                while (isCon >= 0) {
-                    middle = (int) myStack.pop();
-                    isCon--;
+        return binSearch(arr, x, myStack, 0, arr.length - 1);
+    }
+
+    private static int binSearch(int[] arr, int x, Stack myStack, int left, int right) {
+        int isCon = isConsistent(arr);
+        if (isCon>0) {
+            int index=0;
+            while (isCon > 0) {
+                index = (int) myStack.pop();
+                isCon = isCon-1;
+            }
+            if (index < left) {
+                return binSearch(arr,x,myStack,index - (right - index),right);
+            }
+            if (index > right) {
+                return binSearch(arr,x,myStack,left,index + (index - left));
+            }
+        }
+
+        else {
+            while (left < right) {
+                int mid = (left + right) / 2;
+                myStack.push(mid);
+                if (x < arr[mid]) {
+                    return binSearch(arr, x, myStack, left, mid - 1);
+                }
+                if (x > arr[mid]) {
+                    return binSearch(arr, x, myStack, mid + 1, right);
+                }
+                if (x == arr[mid]) {
+                    return mid;
                 }
             }
-            else middle = (low + high) / 2;
-            myStack.push(middle);
-            if (arr[middle] == x) return middle;
-            if (arr[middle] < x) low = middle + 1;
-            else high = middle - 1;
         }
+
         return -1;
     }
 
