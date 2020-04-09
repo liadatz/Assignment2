@@ -14,5 +14,6 @@ public class Main {
         //test 1b
         System.out.println(consistentBinSearch(arr, 13, myStack));
 
+
     }
 }

@@ -72,7 +72,8 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
                 maximum = index;
             if (minimum == size)
                 minimum = index;
-        } else {
+        }
+        else {
             maximum = null;
             minimum = null;
         }
