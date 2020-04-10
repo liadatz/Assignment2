@@ -27,11 +27,53 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     }
 
     public void insert(BacktrackingBST.Node z) {
-        // TODO: implement your code here
+        stack.push(z);
+        Node curr = root;
+        Node prev = null;
+        while (curr != null) {
+            prev = curr;
+            if (curr.key > z.key)
+                curr = curr.left;
+            else
+                curr = curr.right;
+        }
+        if (prev == null)
+            root = z;
+        else if (prev.key > z.key)
+            prev.left = z;
+        else
+            prev.right = z;
     }
 
     public void delete(Node x) {
-        // TODO: implement your code here
+        recursiveDelete(x,root);
+    }
+
+    private static void recursiveDelete (Node toRemove, Node current) {
+        if (current.key > toRemove.key) {
+            if (current.left != null)
+                recursiveDelete(toRemove, current.left);
+        } else if (current.key < toRemove.key) {
+            if (current.right != null)
+                recursiveDelete(toRemove, current.right);
+        } else { //need to remove the data in this node
+            if (current.left == null | current.right == null) { // 0/1 children
+                if (current.left == null)         // (base cases)
+                    current.parent = current.right;
+                else
+                    current.parent = current.left;
+            } else { // this node has two children
+                current = findMin(current.right);
+                recursiveDelete(current, current.right);
+            }
+        }
+    }
+    private static Node findMin(Node node){
+        Node currNode = node;
+        while (currNode.left != null){
+            currNode = currNode.left;
+        }
+        return currNode;
     }
 
     public Node minimum() {
@@ -77,7 +119,6 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         //These fields are public for grading purposes. By coding conventions and best practice they should be private.
         public BacktrackingBST.Node left;
         public BacktrackingBST.Node right;
-
         private BacktrackingBST.Node parent;
         private int key;
         private Object value;
