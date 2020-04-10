@@ -14,17 +14,16 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     public Node getRoot() {
         return root;
     }
-	
+
     public Node search(int x) {
         Node curr = root;
-        while (curr.key!=x) {
+        while (curr != null && curr.key != x) {
             if (curr.key > x) {
                 curr = curr.left;
-            }
-            else
-                curr=curr.right;
+            } else
+                curr = curr.right;
         }
-        if (curr.key==x)
+        if (curr != null)
             return curr;
         else
             return null;
@@ -68,7 +67,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         // TODO: implement your code here
     }
 
-    public void printPreOrder(){
+    public void printPreOrder() {
         // TODO: implement your code here
     }
 
@@ -77,11 +76,11 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         // TODO: implement your code here
     }
 
-    public static class Node{
-    	//These fields are public for grading purposes. By coding conventions and best practice they should be private.
+    public static class Node {
+        //These fields are public for grading purposes. By coding conventions and best practice they should be private.
         public BacktrackingBST.Node left;
         public BacktrackingBST.Node right;
-        
+
         private BacktrackingBST.Node parent;
         private int key;
         private Object value;

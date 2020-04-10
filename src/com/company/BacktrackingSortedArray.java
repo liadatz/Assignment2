@@ -9,7 +9,7 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
     public BacktrackingSortedArray(Stack stack, int size) {
         this.stack = stack;
         arr = new int[size];
-        size=0;
+        size = 0;
     }
 
     @Override
@@ -34,19 +34,19 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
 
     @Override
     public void insert(Integer x) {
-        int index = insertBinarySearch(arr,x,0,size-1);
-        for (int i= size; i>index;i--){
-            arr[i]=arr[i-1];
+        int index = insertBinarySearch(arr, x, 0, size - 1);
+        for (int i = size; i > index; i--) {
+            arr[i] = arr[i - 1];
         }
-        arr[index]=x;
+        arr[index] = x;
         stack.push(x);
         stack.push(index);
         stack.push(size);
-        size=size+1;
+        size = size + 1;
     }
 
     private static int insertBinarySearch(int[] arr, int x, int left, int right) {
-        if (right==-1)
+        if (right == -1)
             return 0;
         while (left != right) {
             int mid = (left + right) / 2;
@@ -63,54 +63,53 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
         stack.push(arr[index]);
         stack.push(index);
         stack.push(size);
-        for (int i = index; i<size; i=i++){
-            arr[i]=arr[i+1];
+        for (int i = index; i < size; i = i++) {
+            arr[i] = arr[i + 1];
         }
-        size=size--;
+        size = size--;
     }
 
     @Override
     public Integer minimum() {
-        if (size==0){
-            return null;
+        if (size == 0) {
+            return -1;
         }
-        return arr [0];
+        return 0;
     }
 
     @Override
     public Integer maximum() {
-        if (size==0){
-            return null;
+        if (size == 0) {
+            return -1;
         }
-        return arr [size-1];
+        return size - 1;
     }
 
     @Override
     public Integer successor(Integer index) {
-        if (index<size-1)
-            return index++;
-        return null;
+        if (index < size - 1)
+            return index + 1;
+        return -1;
     }
 
     @Override
     public Integer predecessor(Integer index) {
-        if (index!=0)
-            return index--;
-        return null;
+        if (index != 0)
+            return index - 1;
+        return -1;
     }
 
     @Override
     public void backtrack() {
         int temp = (int) stack.pop();
         int index = (int) stack.pop();
-        if (size<temp) {
+        if (size < temp) {
             for (int i = size; i > index; i--) {
                 arr[i] = arr[i - 1];
             }
             arr[index] = (int) stack.pop();
-        }
-        else {
-            for (int i = index; i < size; i = i++) {
+        } else {
+            for (int i = index; i < size; i++) {
                 arr[i] = arr[i + 1];
             }
         }
@@ -124,11 +123,11 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
     @Override
     public void print() {
         String output = "";
-        for (int i=0; i<size; i++){
-            output = output + arr[i]+ " ";
+        for (int i = 0; i < size; i++) {
+            output = output + arr[i] + " ";
         }
-        if (output.length()>0)
-            output.substring(0,output.length()-1);
+        if (output.length() > 0)
+            output = output.substring(0, output.length() - 1);
         System.out.println(output);
     }
 }
