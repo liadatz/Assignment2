@@ -111,6 +111,7 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
         } else {
             for (int i = index; i < size; i++) {
                 arr[i] = arr[i + 1];
+                stack.pop();
             }
         }
     }

@@ -23,10 +23,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
             } else
                 curr = curr.right;
         }
-        if (curr != null)
-            return curr;
-        else
-            return null;
+        return curr;
     }
 
     public void insert(BacktrackingBST.Node z) {
