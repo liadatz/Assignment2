@@ -54,16 +54,16 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
         size = size - 1;
         arr[index] = arr[size];
         if (size > 0) {
-            if (index == minimum) {
+            if (index.equals(minimum)) {
                 minimum = (Integer) 0;
                 for (int i = 1; i < size; i++) {
                     if (arr[i] < arr[minimum])
                         minimum = (Integer) i;
                 }
             }
-            if (index == maximum) {
+            if (index.equals(maximum)) {
                 maximum = (Integer) 0;
-                for (int i = 0; i < size; i++) {
+                for (int i = 1; i < size; i++) {
                     if (arr[i] > arr[maximum])
                         maximum = (Integer) i;
                 }
@@ -91,10 +91,10 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
 
     @Override
     public Integer successor(Integer index) {
-        Integer output = null;
+        Integer output = -1;
         for (int i = 0; i < size; i++)
             if (arr[i] > arr[index]) {
-                if (output == null || arr[i] < arr[output])
+                if (output.equals(-1) || arr[i] < arr[output])
                     output = (Integer) i;
             }
         return output;
@@ -102,10 +102,10 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
 
     @Override
     public Integer predecessor(Integer index) {
-        Integer output = null;
+        Integer output = -1;
         for (int i = 0; i < size; i++)
             if (arr[i] < arr[index]) {
-                if (output == null || arr[i] > arr[output])
+                if (output.equals(-1) || arr[i] > arr[output])
                     output = (Integer) i;
             }
         return output;
@@ -134,7 +134,7 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
             output = output + arr[i]+ " ";
         }
         if (output.length()>0)
-            output.substring(0,output.length()-1);
+            output = output.substring(0,output.length()-1);
         System.out.println(output);
     }
 }

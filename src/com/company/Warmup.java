@@ -3,7 +3,7 @@ package com.company;
 public class Warmup {
     public static int backtrackingSearch(int[] arr, int x, int fd, int bk, Stack myStack) {
         for (int i = 0; i < arr.length; i++) {
-            int fd1=fd;
+            int fd1 = fd;
             int bk1 = bk;
             while (fd > 0) {
                 myStack.push(arr[i]);
@@ -11,13 +11,13 @@ public class Warmup {
                 fd--;
                 i++;
             }
-            fd=fd1;
+            fd = fd1;
             while (bk > 0) {
                 myStack.pop();
                 bk--;
                 i--;
             }
-            bk=bk1;
+            bk = bk1;
             myStack.push(arr[i]);
             if (arr[i] == x) return i;
         }
