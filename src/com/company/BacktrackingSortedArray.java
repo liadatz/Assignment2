@@ -1,6 +1,6 @@
 package com.company;
 
-public class cdr4sxBacktrackingSortedArray implements Array<Integer>, Backtrack {
+public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
     private Stack stack;
     private int[] arr;
     int size;
