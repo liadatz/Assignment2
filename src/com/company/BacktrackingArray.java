@@ -83,6 +83,7 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
         }
     }
 
+
     @Override
     public Integer minimum() {
         return minimum;
