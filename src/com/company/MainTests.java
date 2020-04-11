@@ -4,7 +4,7 @@ package com.company;
 public class MainTests {
     public static void main(String[] args) {
 
-        //*****Array Tests*******
+        //*****Array Tests********
         Stack st = new Stack();
         BacktrackingArray backarr1 = new BacktrackingArray(st,20);
 
