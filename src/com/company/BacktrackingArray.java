@@ -35,9 +35,12 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
     public void insert(Integer x) {
         if (size == arr.length)
             throw new IllegalArgumentException();
+        stack.push(x);
+        stack.push(size);
         stack.push(size);
         stack.push(minimum);
         stack.push(maximum);
+
         arr[size] = x;
         if (minimum == null || x < arr[minimum])
             minimum = (Integer) size;
@@ -48,22 +51,24 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
 
     @Override
     public void delete(Integer index) {
+        stack.push(arr[index]);
+        stack.push(index);
         stack.push(size);
         stack.push(minimum);
         stack.push(maximum);
         size = size - 1;
         arr[index] = arr[size];
         if (size > 0) {
-            if (index.equals(minimum)) {
+            if (index == minimum) {
                 minimum = (Integer) 0;
                 for (int i = 1; i < size; i++) {
                     if (arr[i] < arr[minimum])
                         minimum = (Integer) i;
                 }
             }
-            if (index.equals(maximum)) {
+            if (index == maximum) {
                 maximum = (Integer) 0;
-                for (int i = 1; i < size; i++) {
+                for (int i = 0; i < size; i++) {
                     if (arr[i] > arr[maximum])
                         maximum = (Integer) i;
                 }
@@ -72,8 +77,7 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
                 maximum = index;
             if (minimum == size)
                 minimum = index;
-        }
-        else {
+        } else {
             maximum = null;
             minimum = null;
         }
@@ -91,10 +95,10 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
 
     @Override
     public Integer successor(Integer index) {
-        Integer output = -1;
+        Integer output = null;
         for (int i = 0; i < size; i++)
             if (arr[i] > arr[index]) {
-                if (output.equals(-1) || arr[i] < arr[output])
+                if (output == null || arr[i] < arr[output])
                     output = (Integer) i;
             }
         return output;
@@ -102,10 +106,10 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
 
     @Override
     public Integer predecessor(Integer index) {
-        Integer output = -1;
+        Integer output = null;
         for (int i = 0; i < size; i++)
             if (arr[i] < arr[index]) {
-                if (output.equals(-1) || arr[i] > arr[output])
+                if (output == null || arr[i] > arr[output])
                     output = (Integer) i;
             }
         return output;
@@ -116,7 +120,10 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
         if (!stack.isEmpty()) {
             maximum = (Integer) stack.pop();
             minimum = (Integer) stack.pop();
-            size = (Integer) stack.pop();
+            int temp = (Integer) stack.pop();
+            if (size < temp)
+                arr[(Integer) stack.pop()] = (Integer) stack.pop();
+            size = temp;
         }
         System.out.println("backtracking performed");
     }
@@ -130,11 +137,11 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
     @Override
     public void print() {
         String output = "";
-        for (int i=0; i<size; i++){
-            output = output + arr[i]+ " ";
+        for (int i = 0; i < size; i++) {
+            output = output + arr[i] + " ";
         }
-        if (output.length()>0)
-            output = output.substring(0,output.length()-1);
+        if (output.length() > 0)
+            output.substring(0, output.length() - 1);
         System.out.println(output);
     }
 }
