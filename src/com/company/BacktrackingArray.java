@@ -35,6 +35,8 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
     public void insert(Integer x) {
         if (size == arr.length)
             throw new IllegalArgumentException();
+        stack.push(x);
+        stack.push(size);
         stack.push(size);
         stack.push(minimum);
         stack.push(maximum);
@@ -48,6 +50,8 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
 
     @Override
     public void delete(Integer index) {
+        stack.push(arr[index]);
+        stack.push(index);
         stack.push(size);
         stack.push(minimum);
         stack.push(maximum);
@@ -72,12 +76,12 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
                 maximum = index;
             if (minimum == size)
                 minimum = index;
-        }
-        else {
+        } else {
             maximum = null;
             minimum = null;
         }
     }
+
 
     @Override
     public Integer minimum() {
@@ -116,7 +120,10 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
         if (!stack.isEmpty()) {
             maximum = (Integer) stack.pop();
             minimum = (Integer) stack.pop();
-            size = (Integer) stack.pop();
+            int temp = (Integer) stack.pop();
+            if (size < temp)
+                arr[(Integer) stack.pop()] = (Integer) stack.pop();
+            size = temp;
         }
         System.out.println("backtracking performed");
     }
