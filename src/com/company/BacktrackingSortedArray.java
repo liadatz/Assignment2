@@ -72,31 +72,31 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
     @Override
     public Integer minimum() {
         if (size == 0) {
-            return null;
+            return -1;
         }
-        return arr[0];
+        return 0;
     }
 
     @Override
     public Integer maximum() {
         if (size == 0) {
-            return null;
+            return -1;
         }
-        return arr[size - 1];
+        return size - 1;
     }
 
     @Override
     public Integer successor(Integer index) {
         if (index < size - 1)
-            return index++;
-        return null;
+            return index + 1;
+        return -1;
     }
 
     @Override
     public Integer predecessor(Integer index) {
         if (index != 0)
-            return index--;
-        return null;
+            return index - 1;
+        return -1;
     }
 
     @Override
@@ -109,8 +109,9 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
             }
             arr[index] = (int) stack.pop();
         } else {
-            for (int i = index; i < size; i = i++) {
+            for (int i = index; i < size; i++) {
                 arr[i] = arr[i + 1];
+                stack.pop();
             }
         }
     }
@@ -127,7 +128,7 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
             output = output + arr[i] + " ";
         }
         if (output.length() > 0)
-            output.substring(0, output.length() - 1);
+            output = output.substring(0, output.length() - 1);
         System.out.println(output);
     }
 }
