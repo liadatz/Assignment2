@@ -46,44 +46,40 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     }
 
     public void delete(Node x) {
-        recursiveDelete(x,root);
-    }
-
-    private static void recursiveDelete (Node toRemove, Node current) {
-        if (current.key > toRemove.key) {
-            if (current.left != null)
-                recursiveDelete(toRemove, current.left);
-        } else if (current.key < toRemove.key) {
-            if (current.right != null)
-                recursiveDelete(toRemove, current.right);
-        } else { //need to remove the data in this node
-            if (current.left == null | current.right == null) { // 0/1 children
-                if (current.left == null)         // (base cases)
-                    current.parent = current.right;
-                else
-                    current.parent = current.left;
-            } else { // this node has two children
-                current = findMin(current.right);
-                recursiveDelete(current, current.right);
-            }
+        if (x.left == null & x.right == null) { // 0 children
+            if (x.parent.right == x) x.parent.right = null;
+            else x.parent.left = null;
         }
-    }
-    private static Node findMin(Node node){
-        Node currNode = node;
-        while (currNode.left != null){
-            currNode = currNode.left;
+        else if (x.left == null) { // 1 right children
+            x.right.parent = x.parent;
+            x.parent.left = x.right;
         }
-        return currNode;
+        else if (x.right == null) { // 1 left right
+            x.left.parent = x.parent;
+            x.parent.right = x.left;
+        }
+        else { // this node has two children
+            Node succ = successor(x);
+            x.value = succ.value;
+            x.key = succ.key;
+            delete(succ);
+        }
     }
 
     public Node minimum() {
-        // TODO: implement your code here
-        return null;
+        Node curr = root;
+        while (curr.left != null) {
+            curr = curr.left;
+        }
+        return curr;
     }
 
     public Node maximum() {
-        // TODO: implement your code here
-        return null;
+        Node curr = root;
+        while (curr.right != null) {
+            curr = curr.right;
+        }
+        return curr;
     }
 
     public Node successor(Node x) {
@@ -126,6 +122,15 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         public Node(int key, Object value) {
             this.key = key;
             this.value = value;
+        }
+
+        // Copy builder
+        private Node (Node other) {
+            left = other.left;
+            right = other.right;
+            parent = other.parent;
+            key = other.key;
+            value = other.value;
         }
 
         public int getKey() {
