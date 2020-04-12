@@ -1,17 +1,20 @@
 package com.company;
 
-import static com.company.Warmup.consistentBinSearch;
-
 public class Main {
 
     public static void main(String[] args) {
 
-        int[] arr = {1, 1, 2, 14, 15, 16, 23, 99, 100, 100, 100, 132, 193, 196, 197};
-        Stack myStack = new Stack();
-//        //test 1a
-        System.out.println(consistentBinSearch(arr,14,myStack));
-//
-//        //test 1b
-        System.out.println(consistentBinSearch(arr, 13, myStack));
+        int[] arr = {17, 62, 19, 10, 1, 78, 20, 20, 20, 10};
+        int[] arr2 = {12, 6, 1, 29, 17, 33, 30, 46};
+        Stack stack1 = new Stack();
+        Stack stack2 = new Stack();
+        BacktrackingBST bst = new BacktrackingBST(stack1,stack2);
+        for (int i = 0; i < arr2.length; i++) {
+            BacktrackingBST.Node z = new BacktrackingBST.Node(arr2[i],arr2[i]);
+            bst.insert(z);
+
+        }
+        bst.print();
+
     }
 }

@@ -83,13 +83,43 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     }
 
     public Node successor(Node x) {
-        // TODO: implement your code here
-        return null;
+        Node curr = x;
+        // If x has a right child, the successor is the node with
+        // minimum key in the subtree of the right child
+        if (x.right != null) {
+            while (curr.left != null)
+                curr = curr.left;
+            return curr;
+        }
+        // Otherwise, the successor is the lowest ancestor of x
+        // whose left child is also an ancestor of x (if no such
+        // ancestor exists, the successor is NULL)
+        else {
+            Node y = x.parent;
+            while (y != null && curr == y.right) {
+                curr = y;
+                y = y.parent;
+            }
+            return y;
+        }
     }
 
     public Node predecessor(Node x) {
-        // TODO: implement your code here
-        return null;
+        // Symmetric to successor method
+        Node curr = x;
+        if (x.left != null) {
+            while (curr.right != null)
+                curr = curr.right;
+            return curr;
+        }
+        else {
+            Node y = x.parent;
+            while (y != null && curr == y.left) {
+                curr = y;
+                y = y.parent;
+            }
+            return y;
+        }
     }
 
     @Override
@@ -103,12 +133,43 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     }
 
     public void printPreOrder() {
-        // TODO: implement your code here
+        print();
     }
 
     @Override
     public void print() {
-        // TODO: implement your code here
+        Node node = root;
+        while (node != null) {
+
+            // If left child is null, print the current node data. Move to
+            // right child.
+            if (node.left == null) {
+                System.out.print(node.value + " ");
+                node = node.right;
+            } else {
+
+                // Find inorder predecessor
+                Node current = node.left;
+                while (current.right != null && current.right != node) {
+                    current = current.right;
+                }
+
+                // If the right child of inorder predecessor
+                // already points to this node
+                if (current.right == node) {
+                    current.right = null;
+                    node = node.right;
+                }
+
+                // If right child doesn't point to this node, then print
+                // this node and make right child point to this node
+                else {
+                    System.out.print(node.value + " ");
+                    current.right = node;
+                    node = node.left;
+                }
+            }
+        }
     }
 
     public static class Node {
