@@ -39,10 +39,14 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         }
         if (prev == null)
             root = z;
-        else if (prev.key > z.key)
+        else if (prev.key > z.key) {
             prev.left = z;
-        else
+            z.parent = prev;
+        }
+        else {
             prev.right = z;
+            z.parent = prev;
+        }
     }
 
     public void delete(Node x) {
