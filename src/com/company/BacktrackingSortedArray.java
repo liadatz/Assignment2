@@ -73,7 +73,7 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
         for (int i = index; i < size; i++) {
             arr[i] = arr[i + 1];
         }
-        size = size--;
+        size--;
     }
 
     @Override
@@ -122,6 +122,7 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
                     stack.pop();
                 }
             }
+            size = temp;
         }
         System.out.println("backtracking performed");
     }
