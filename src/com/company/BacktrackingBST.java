@@ -27,6 +27,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     }
 
     public void insert(BacktrackingBST.Node z) {
+        redoStack.clear();
         stack.push(z);
         stack.push("insert");
         Node curr = root;
@@ -50,26 +51,55 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         }
     }
 
+    // String meaning:
+    // r- stand for root, n - not root
+    // 00 - no children, 01 - 1 right child, 10 - 1 left child, 11 - 2 children
     public void delete(Node x) {
+        redoStack.clear();
+        stack.push(x);
         if (x.left == null & x.right == null) { // 0 children
-            if (x.parent.right == x) x.parent.right = null;
-            else x.parent.left = null;
+            if (x == root) {
+                root = null;
+                stack.push("r00");
+            }
+            else {
+                if (x.parent.right == x) x.parent.right = null;
+                else x.parent.left = null;
+                stack.push("n00");
+            }
         }
-        else if (x.left == null) { // 1 right children
-            x.right.parent = x.parent;
-            if (x.parent.right == x) x.parent.right = x.right;
-            else x.parent.left = x.right;
+        else if (x.left == null) { // 1 right child
+            if (x == root) {
+                root = x.right;
+                x.right.parent = null;
+                stack.push("r01");
+            }
+            else {
+                x.right.parent = x.parent;
+                if (x.parent.right == x) x.parent.right = x.right;
+                else x.parent.left = x.right;
+                stack.push("n01");
+            }
         }
-        else if (x.right == null) { // 1 left children
-            x.left.parent = x.parent;
-            if (x.parent.right == x) x.parent.right = x.left;
-            else x.parent.left = x.left;
+        else if (x.right == null) { // 1 left child
+            if (x == root) {
+                root = x.left;
+                x.left.parent = null;
+                stack.push("r10");
+            }
+            else {
+                x.left.parent = x.parent;
+                if (x.parent.right == x) x.parent.right = x.left;
+                else x.parent.left = x.left;
+                stack.push("n10");
+            }
         }
         else { // this node has two children
-            Node succ = successor(x);
-            x.value = succ.value;
-            x.key = succ.key;
-            delete(succ);
+            Node successor = successor(x);
+            x.value = successor.value;
+            x.key = successor.key;
+            stack.push("n11");
+            delete(successor);
         }
     }
 
@@ -94,6 +124,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         // If x has a right child, the successor is the node with
         // minimum key in the subtree of the right child
         if (x.right != null) {
+            curr = x.right;
             while (curr.left != null)
                 curr = curr.left;
             return curr;
@@ -115,6 +146,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         // Symmetric to successor method
         Node curr = x;
         if (x.left != null) {
+            curr = x.left;
             while (curr.right != null)
                 curr = curr.right;
             return curr;
@@ -132,13 +164,39 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     @Override
     public void backtrack() {
         String action = (String) stack.pop();
-        if (action.equals("insert")) {
-            Node node = (Node) stack.pop();
+        Node node = (Node) stack.pop();
+        if (action.equals("insert")) { // undo insert
             delete(node);
             redoStack.push(node);
             redoStack.push("insert");
         }
-        else {
+        else { // undo delete
+            redoStack.push(node);
+            redoStack.push("delete");
+            if (action.charAt(1) == 0 & action.charAt(2) == 0) { // 0 children
+                insert(node);
+            }
+            else if (action.equals("n10")) { // node wasn't root with 1 left child
+                node.left.parent = node;
+                if (node.parent.left == node.left) node.parent.left = node;
+                else node.parent.right = node;
+            }
+            else if (action.equals("r10")) { // node was root with 1 left child
+                node.left.parent = node;
+                root = node;
+            }
+            else if (action.equals("n01")) { // node wasn't root with 1 right child
+                node.right.parent = node;
+                if (node.parent.left == node.right) node.parent.left = node;
+                else node.parent.right = node;
+            }
+            else if (action.equals("r01")) { // node was root with 1 right child
+                node.right.parent = node;
+                root = node;
+            }
+            else {
+
+            }
 
         }
     }
@@ -146,12 +204,12 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     @Override
     public void retrack() {
         String action = (String) redoStack.pop();
+        Node node = (Node) redoStack.pop();
         if (action.equals("insert")) {
-            Node node = (Node) redoStack.pop();
             insert(node);
         }
         else {
-
+            delete(node);
         }
     }
 
@@ -234,7 +292,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
             this.value = value;
         }
 
-        // Copy builder
+        // Copy builder TODO remove
         private Node (Node other) {
             left = other.left;
             right = other.right;
