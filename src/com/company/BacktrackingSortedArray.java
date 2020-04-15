@@ -70,7 +70,7 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
         stack.push(arr[index]);
         stack.push(index);
         stack.push(size);
-        for (int i = index; i < size; i = i++) {
+        for (int i = index; i < size; i++) {
             arr[i] = arr[i + 1];
         }
         size = size--;
