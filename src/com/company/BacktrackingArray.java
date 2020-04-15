@@ -123,6 +123,10 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
             int temp = (Integer) stack.pop();
             if (size < temp)
                 arr[(Integer) stack.pop()] = (Integer) stack.pop();
+            else{
+                stack.pop();
+                stack.pop();
+            }
             size = temp;
         }
         System.out.println("backtracking performed");

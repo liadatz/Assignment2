@@ -49,10 +49,10 @@ public class MainTests {
         System.out.println();
         backarr1.insert(1);
         //Delete 4
-        System.out.println("Delete Tests num 4 - index is last(9)");
+        System.out.println("Delete Tests num 4 - index is last(8)");
         System.out.print("Before: ");
         backarr1.print();
-        backarr1.delete(9);
+        backarr1.delete(8);
         System.out.print(" After: ");
         backarr1.print();
         backarr1.insert(6);
