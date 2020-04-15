@@ -524,7 +524,7 @@ public class MainTests {
         }
         System.out.println("Backtracking Tests B: undo delete \n");
         //Test B1 - Delete once from end
-        System.out.print("Test B1: deleted value (9) from end. Before deletion: ");
+        System.out.print("Test B1*: deleted value (9) from end. Before deletion: ");
         backarr2.print();
         System.out.println();
         System.out.print(" after deletion: ");
