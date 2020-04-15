@@ -96,9 +96,20 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         }
         else { // this node has two children
             Node successor = successor(x);
-            x.value = successor.value;
-            x.key = successor.key;
-            stack.push("n11");
+            Node successorCopy = new Node (successor);
+            if (x == root) {
+                successorCopy.parent = null;
+                root = successorCopy;
+                stack.push("r11");
+
+            }
+            else {
+                stack.push("n11");
+            }
+            x.left.parent = successorCopy;
+            x.right.parent = successorCopy;
+            successorCopy.right = x.right;
+            successorCopy.left = x.left;
             delete(successor);
         }
     }
@@ -194,10 +205,18 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
                 node.right.parent = node;
                 root = node;
             }
-            else {
-
+            if (!stack.isEmpty()) {
+                String action2 = (String) stack.pop();
+                if (action2.equals("n11") | action2.equals("r11")) {
+                    Node node2 = (Node) stack.pop();
+                    node2.left.parent = node2;
+                    node2.right.parent = node2;
+                    redoStack.push(node2);
+                    redoStack.push("delete");
+                    if (action2.charAt(0) == 'r') root = node2;
+                }
+                else stack.push(action2);
             }
-
         }
     }
 
@@ -292,7 +311,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
             this.value = value;
         }
 
-        // Copy builder TODO remove
+        // Copy builder
         private Node (Node other) {
             left = other.left;
             right = other.right;
