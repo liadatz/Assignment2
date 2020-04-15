@@ -101,7 +101,6 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
                 successorCopy.parent = null;
                 root = successorCopy;
                 stack.push("r11");
-
             }
             else {
                 stack.push("n11");
@@ -110,6 +109,10 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
             x.right.parent = successorCopy;
             successorCopy.right = x.right;
             successorCopy.left = x.left;
+            successorCopy.parent = x.parent;
+            if (x.parent.right == x) x.parent.right = successorCopy;
+            else x.parent.left = successorCopy;
+
             delete(successor);
         }
     }
@@ -184,8 +187,12 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         else { // undo delete
             redoStack.push(node);
             redoStack.push("delete");
-            if (action.charAt(1) == 0 & action.charAt(2) == 0) { // 0 children
-                insert(node);
+            if (action.charAt(1) == '0' & action.charAt(2) == '0') { // 0 children
+                if (action.charAt(0) == 'r') root = node;
+                else {
+                    if (node.key > node.parent.key) node.parent.right = node;
+                    else node.parent.left = node;
+                }
             }
             else if (action.equals("n10")) { // node wasn't root with 1 left child
                 node.left.parent = node;
