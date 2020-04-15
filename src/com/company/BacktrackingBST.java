@@ -28,6 +28,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
 
     public void insert(BacktrackingBST.Node z) {
         stack.push(z);
+        stack.push("insert");
         Node curr = root;
         Node prev = null;
         while (curr != null) {
@@ -56,11 +57,13 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         }
         else if (x.left == null) { // 1 right children
             x.right.parent = x.parent;
-            x.parent.left = x.right;
+            if (x.parent.right == x) x.parent.right = x.right;
+            else x.parent.left = x.right;
         }
-        else if (x.right == null) { // 1 left right
+        else if (x.right == null) { // 1 left children
             x.left.parent = x.parent;
-            x.parent.right = x.left;
+            if (x.parent.right == x) x.parent.right = x.left;
+            else x.parent.left = x.left;
         }
         else { // this node has two children
             Node succ = successor(x);
@@ -128,12 +131,28 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
 
     @Override
     public void backtrack() {
-        // TODO: implement your code here
+        String action = (String) stack.pop();
+        if (action.equals("insert")) {
+            Node node = (Node) stack.pop();
+            delete(node);
+            redoStack.push(node);
+            redoStack.push("insert");
+        }
+        else {
+
+        }
     }
 
     @Override
     public void retrack() {
-        // TODO: implement your code here
+        String action = (String) redoStack.pop();
+        if (action.equals("insert")) {
+            Node node = (Node) redoStack.pop();
+            insert(node);
+        }
+        else {
+
+        }
     }
 
     public void printPreOrder() {
@@ -148,7 +167,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
             // If left child is null, print the current node data. Move to
             // right child.
             if (node.left == null) {
-                System.out.print(node.value + " ");
+                System.out.print(node.key + " ");
                 node = node.right;
             } else {
 
@@ -168,13 +187,39 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
                 // If right child doesn't point to this node, then print
                 // this node and make right child point to this node
                 else {
-                    System.out.print(node.value + " ");
+                    System.out.print(node.key + " ");
                     current.right = node;
                     node = node.left;
                 }
             }
         }
     }
+
+    // TODO remove
+    public void treeFormPrint(){
+        if (root != null) treeFormPrint(root, "");
+        else System.out.println("Empty tree");
+    }
+
+    // TODO remove
+    private void treeFormPrint(Node node, String acc){
+        String signSpace = acc + "            ";
+        if (node.right != null) {
+            treeFormPrint(node.right, acc+"               ");
+            if (node.right.parent == node)
+                System.out.println(signSpace + "/");
+            else System.out.println(signSpace + "$");
+        }
+        System.out.println(acc + "| key: " + node.key);
+        System.out.println(acc + "| par: " + node.parent);
+        if (node.left != null) {
+            if (node.left.parent == node)
+                System.out.println(signSpace + "\\");
+            else System.out.println(signSpace + "$");
+            treeFormPrint(node.left, acc+"               ");
+        }
+    }
+
 
     public static class Node {
         //These fields are public for grading purposes. By coding conventions and best practice they should be private.
@@ -204,6 +249,11 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
 
         public Object getValue() {
             return value;
+        }
+
+        // TODO remove
+        public String toString() {
+            return key+"";
         }
     }
 
