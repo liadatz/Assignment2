@@ -108,19 +108,22 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
 
     @Override
     public void backtrack() {
-        int temp = (int) stack.pop();
-        int index = (int) stack.pop();
-        if (size < temp) {
-            for (int i = size; i > index; i--) {
-                arr[i] = arr[i - 1];
-            }
-            arr[index] = (int) stack.pop();
-        } else {
-            for (int i = index; i < size; i++) {
-                arr[i] = arr[i + 1];
-                stack.pop();
+        if (!stack.isEmpty()) {
+            int temp = (int) stack.pop();
+            int index = (int) stack.pop();
+            if (size < temp) {
+                for (int i = size; i > index; i--) {
+                    arr[i] = arr[i - 1];
+                }
+                arr[index] = (int) stack.pop();
+            } else {
+                for (int i = index; i < size; i++) {
+                    arr[i] = arr[i + 1];
+                    stack.pop();
+                }
             }
         }
+        System.out.println("backtracking performed");
     }
 
     @Override
