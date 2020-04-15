@@ -51,10 +51,13 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
         while (left != right) {
             int mid = (left + right) / 2;
             if (x == arr[mid]) return mid;
-            if (x < arr[mid]) return binarySearch(arr, x, left, mid - 1);
-            if (x > arr[mid]) return binarySearch(arr, x, mid + 1, right);
+            if (x < arr[mid]) return insertBinarySearch(arr, x, left, mid - 1);
+            if (x > arr[mid]) return insertBinarySearch(arr, x, mid + 1, right);
         }
-        return left;
+        if (x>arr[left])
+            return left+1;
+        else
+            return left;
     }
 
 
