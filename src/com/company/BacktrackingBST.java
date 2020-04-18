@@ -91,7 +91,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
             Node successor = successor(x);
             Node successorCopy = new Node(successor);
             if (x == root) {
-                successorCopy.parent = null;
+//                successorCopy.parent = null;
                 root = successorCopy;
                 stack.push("r11");
             } else {
