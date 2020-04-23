@@ -64,7 +64,7 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
             if (arr[i] > arr[maximum])
                 maximum = (Integer) i;
         }
-        return  maximum;
+        return maximum;
     }
 
     @Override
@@ -92,14 +92,14 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
     @Override
     public void backtrack() {
         if (!stack.isEmpty()) {
-            int temp = (Integer) stack.pop();
-            if (size < temp)
-                arr[(Integer) stack.pop()] = (Integer) stack.pop();
-            else{
+            int tempSize = (Integer) stack.pop();
+            int tempIndex = (Integer) stack.pop();
+            if (size < tempSize) {
+                arr[size] = arr[tempIndex];
+                arr[tempIndex] = (Integer) stack.pop();
+            } else
                 stack.pop();
-                stack.pop();
-            }
-            size = temp;
+            size = tempSize;
         }
         System.out.println("backtracking performed");
     }
