@@ -30,24 +30,24 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         internalInsert(z, true);
     }
 
-    private void internalInsert(BacktrackingBST.Node z, boolean shouldClearRetrackStack) {
-        if (shouldClearRetrackStack) {
+    private void internalInsert(BacktrackingBST.Node z, boolean shouldClearRedoStack) {
+        if (shouldClearRedoStack) {
             redoStack.clear();
         }
         stack.push(z);
         stack.push("insert");
         Node curr = root;
         Node prev = null;
-        while (curr != null) {
+        while (curr != null) { // Find designated place for Node z
             prev = curr;
             if (curr.key > z.key)
                 curr = curr.left;
             else
                 curr = curr.right;
         }
-        if (prev == null)
+        if (prev == null) // Meaning loop never initialize so tree must be empty
             root = z;
-        else if (prev.key > z.key) {
+        else if (prev.key > z.key) { // Node prev will be parent of Node z, check if he should be left or right child
             prev.left = z;
             z.parent = prev;
         } else {
@@ -63,8 +63,10 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     // String meaning:
     // r - stand for root, n - not root
     // 00 - no children, 01 - 1 right child, 10 - 1 left child, 11 - 2 children
-    private void internalDelete (Node x,boolean shouldClearRetrackStack) {
-        if (shouldClearRetrackStack) {
+    // Update x's children pointers in order to delete Node x
+    // Check if x was left or right child of parent (if exists) and update parent pointer to x's child or successor
+    private void internalDelete (Node x,boolean shouldClearRedoStack) {
+        if (shouldClearRedoStack) {
             redoStack.clear();
         }
         stack.push(x);
@@ -99,7 +101,8 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
                 else x.parent.left = x.left;
                 stack.push("n10");
             }
-        } else { // this node has two children
+        } else { // This node has two children
+            // A copy of the successor was made in order to prevent pointer's changes in Stack when deleting successor
             Node successor = successor(x);
             Node successorCopy = new Node(successor);
             if (x == root) {
@@ -119,6 +122,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         }
     }
 
+    // Minimum node located in the far left Node of the tree
     public Node minimum() {
         Node curr = root;
         while (curr.left != null) {
@@ -127,6 +131,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         return curr;
     }
 
+    // Maximum node located in the far right Node of the tree
     public Node maximum() {
         Node curr = root;
         while (curr.right != null) {
@@ -176,12 +181,13 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         }
     }
 
+    // Each action and node backtrack pushed in redoStack
     @Override
     public void backtrack() {
         if (!stack.isEmpty()) {
             String action = (String) stack.pop();
             Node node = (Node) stack.pop();
-            if (action.equals("insert")) { // undo insert ~ delete the last node (node with 0 children)
+            if (action.equals("insert")) { // Undo insert ~ delete the last node (node with 0 children)
                 if (node == root) {
                     root = null;
                 } else {
@@ -190,7 +196,11 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
                 }
                 redoStack.push(node);
                 redoStack.push("insert");
-            } else { // undo delete
+            } else { // Undo delete
+                // Restore node to his original location by update children's pointers back to node (if exists)
+                // Check if node originally was left or right child of parent (if exists)
+                // and update node's parent pointer back to node
+                // if node originally was root, update root pointer back to node
                 redoStack.push(node);
                 redoStack.push("delete");
                 if (action.charAt(1) == '0' & action.charAt(2) == '0') { // 0 children
@@ -199,14 +209,14 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
                         if (node.key >= node.parent.key) node.parent.right = node;
                         else node.parent.left = node;
                     }
-                } else if (action.equals("n10")) { // node wasn't root with 1 left child
+                } else if (action.equals("n10")) { // Node wasn't root with 1 left child
                     node.left.parent = node;
                     if (node.parent.left == node.left) node.parent.left = node;
                     else node.parent.right = node;
-                } else if (action.equals("r10")) { // node was root with 1 left child
+                } else if (action.equals("r10")) { // Node was root with 1 left child
                     node.left.parent = node;
                     root = node;
-                } else if (action.equals("n01")) { // node wasn't root with 1 right child
+                } else if (action.equals("n01")) { // Node wasn't root with 1 right child
                     node.right.parent = node;
                     if (node.parent.left == node.right) node.parent.left = node;
                     else node.parent.right = node;
@@ -214,6 +224,9 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
                     node.right.parent = node;
                     root = node;
                 }
+                // If another action is in stack check if its Deletion of a node with 2 children, if not put action back in stack
+                // When deleting node with 2 children, 2 deletions occur- one for the Node with 2 children (A.K.A. x in Delete method)
+                // And another for his successor.
                 if (!stack.isEmpty()) {
                     String action2 = (String) stack.pop();
                     if (action2.equals("n11") | action2.equals("r11")) {
@@ -234,6 +247,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
         System.out.println("backtracking performed");
     }
 
+    // In order to redo each action that backtracked use action method but without clearing RedoStack
     @Override
     public void retrack() {
         if (!redoStack.isEmpty()) {
@@ -255,8 +269,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     public void print() {
         Node node = root;
         while (node != null) {
-            // If left child is null, print the current node data. Move to
-            // right child.
+            // If left child is null, print the current node data and Move to right child
             if (node.left == null) {
                 System.out.print(node.key + " ");
                 node = node.right;
@@ -266,14 +279,12 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
                 while (current.right != null && current.right != node) {
                     current = current.right;
                 }
-                // If the right child of inorder predecessor
-                // already points to this node
+                // If the right child of inorder predecessor already points to this node
                 if (current.right == node) {
                     current.right = null;
                     node = node.right;
                 }
-                // If right child doesn't point to this node, then print
-                // this node and make right child point to this node
+                // If right child doesn't point to this node, then print this node and make right child point to this node
                 else {
                     System.out.print(node.key + " ");
                     current.right = node;
@@ -322,7 +333,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
             this.value = value;
         }
 
-        // Copy builder
+        // Copy builder for Deletion node with 2 children
         private Node(Node other) {
             left = other.left;
             right = other.right;
