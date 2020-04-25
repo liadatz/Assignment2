@@ -30,8 +30,10 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
     public void insert(Integer x) {
         if (size == arr.length)//if array is full ans there is no space to inter x
             throw new IllegalArgumentException();
-        // push 3 variables to the stuck for use it later in the backtracking function
-        // we push element x, push the index which x put in, push the size of the array before the insertion operation
+        /*push 3 variables to the stuck for use it later in the backtracking function
+         we push element x, push the index which x put in, push the size of the array
+         before the insertion operation
+         */
         stack.push(x);
         stack.push(size);
         stack.push(size);
