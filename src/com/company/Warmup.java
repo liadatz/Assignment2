@@ -3,21 +3,21 @@ package com.company;
 public class Warmup {
     public static int backtrackingSearch(int[] arr, int x, int fd, int bk, Stack myStack) {
         for (int i = 0; i < arr.length; i++) {
-            int fd1 = fd;
-            int bk1 = bk;
-            while (fd > 0) {
+            int fdCopy = fd;
+            int bkCopy = bk;
+            while (fd > 0) { // Search x for 'fd' number of searches
                 myStack.push(arr[i]);
                 if (arr[i] == x) return i;
                 fd--;
                 i++;
             }
-            fd = fd1;
-            while (bk > 0) {
+            fd = fdCopy; // Return fd to his originally value
+            while (bk > 0) { // Backtracking 'bk' step
                 myStack.pop();
                 bk--;
                 i--;
             }
-            bk = bk1;
+            bk = bkCopy; // Return bk to his originally value
             myStack.push(arr[i]);
             if (arr[i] == x) return i;
         }
