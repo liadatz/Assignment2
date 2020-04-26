@@ -30,17 +30,17 @@ public class Warmup {
 
     private static int binSearch(int[] arr, int x, Stack myStack, int left, int right) {
         int isCon = isConsistent(arr);
-        if (isCon > 0) {
+        if (isCon > 0) { // If array is is not consistent, undo steps in order to become consistent
             int index = 0;
             while (isCon > 0) {
                 index = (int) myStack.pop();
                 isCon = isCon - 1;
-            }
+            } // Update left or right parameters to previous values
             if (index < left) return binSearch(arr, x, myStack, index - (right - index), right);
             if (index > right) return binSearch(arr, x, myStack, left, index + (index - left));
             }
         else {
-            while (left <= right) {
+            if (left <= right) { // Recursive binary search
                 int mid = (left + right) / 2;
                 myStack.push(mid);
                 if (x == arr[mid]) return mid;
