@@ -9,7 +9,7 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
     public BacktrackingSortedArray(Stack stack, int size) {
         this.stack = stack;
         arr = new int[size];
-        size = 0;//pointer to the next empty cell
+        this.size = 0;//pointer to the next empty cell
     }
 
     @Override
@@ -24,7 +24,7 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
 
     private static int binarySearch(int[] arr, int x, int left, int right) {
         //while we did not find x and left <=right we keep searching for x
-        while (left <= right) {
+        if (left <= right) {
             int mid = (left + right) / 2;//the middle between left to right
             if (x == arr[mid]) return mid;
             if (x < arr[mid]) return binarySearch(arr, x, left, mid - 1);//search x between left to mid-1
@@ -152,6 +152,6 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
         }
         if (output.length() > 0)
             output = output.substring(0, output.length() - 1);//remove the last space
-        System.out.println(output);
+        System.out.print(output);
     }
 }

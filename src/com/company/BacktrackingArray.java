@@ -9,21 +9,21 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
     public BacktrackingArray(Stack stack, int size) {
         this.stack = stack;
         arr = new int[size];
-        size = 0;//pointer to the next empty cell
+        this.size = 0;//pointer to the next empty cell
     }
 
     @Override
     public Integer get(int index) {
-        return (Integer) arr[index];
+        return arr[index];
     }
 
     @Override
     public Integer search(int x) {
         for (int i = 0; i < size; i = i + 1) {//search x by create a loop over all the array
             if (arr[i] == x)
-                return (Integer) i;
+                return i;
         }
-        return (Integer) (-1);//return -1 in case x dose not exist in the array
+        return -1;//return -1 in case x dose not exist in the array
     }
 
     @Override
@@ -62,10 +62,10 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
         we initialize the minimum to 0, and if we find other index i2 that minimum>arr[i2] we
         initialize minimum to i2
          */
-        int minimum = (Integer) 0;
+        int minimum = 0;
         for (int i = 1; i < size; i++) {
             if (arr[i] < arr[minimum])
-                minimum = (Integer) i;
+                minimum = i;
         }
         return minimum;
     }
@@ -76,10 +76,10 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
         we initialize the maximum to 0, and if we find other index i2 that maximum<arr[i2] we
         initialize maximum to i2
          */
-        int maximum = (Integer) 0;
+        int maximum = 0;
         for (int i = 1; i < size; i++) {
             if (arr[i] > arr[maximum])
-                maximum = (Integer) i;
+                maximum = i;
         }
         return maximum;
     }
@@ -99,7 +99,7 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
         for (int i = 0; i < size; i++)
             if (arr[i] > arr[index]) {
                 if (output.equals(-1) || arr[i] < arr[output])
-                    output = (Integer) i;
+                    output = i;
             }
         return output;
     }
@@ -119,7 +119,7 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
         for (int i = 0; i < size; i++)
             if (arr[i] < arr[index]) {
                 if (output.equals(-1) || arr[i] > arr[output])
-                    output = (Integer) i;
+                    output = i;
             }
         return output;
     }
@@ -155,6 +155,6 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
         }
         if (output.length() > 0)
             output = output.substring(0, output.length() - 1);//remove the last space
-        System.out.println(output);
+        System.out.print(output);
     }
 }

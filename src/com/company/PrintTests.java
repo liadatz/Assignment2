@@ -1,7 +1,9 @@
+package com.company;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-public class MainTest {
+public class PrintTests {
     public static void main(String[] args) {
         testPrint();
     }
