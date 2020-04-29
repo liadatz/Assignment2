@@ -134,8 +134,8 @@ public class BacktrackingSortedArray implements Array<Integer>, Backtrack {
                 stack.pop();
             }
             size = temp;//update size
+            System.out.println("backtracking performed");
         }
-        System.out.println("backtracking performed");
     }
 
     @Override

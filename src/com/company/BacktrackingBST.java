@@ -243,8 +243,8 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
                     } else stack.push(action2);
                 }
             }
+            System.out.println("backtracking performed");
         }
-        System.out.println("backtracking performed");
     }
 
     // In order to redo each action that backtracked use action method but without clearing RedoStack

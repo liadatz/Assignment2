@@ -136,8 +136,8 @@ public class BacktrackingArray implements Array<Integer>, Backtrack {
             } else//the last operation was insertion
                 stack.pop();
             size = tempSize;//update size
+            System.out.println("backtracking performed");
         }
-        System.out.println("backtracking performed");
     }
 
 
