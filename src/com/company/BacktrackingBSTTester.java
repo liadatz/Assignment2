@@ -31,7 +31,7 @@ public class BacktrackingBSTTester {
     private List<BacktrackingBST.Node> insertedButNotAvailable;
     private String[] randomOptions = {"Insert random", "Delete random", "", "", "", "", "Predecessor of random", "Successor of random"};
     private String[] specificOptions = {"Search", "Insert", "Delete", "Backtrack", "Retrack", "Minimum", "Maximum",
-                                        "Predecessor", "Successor", "print preOrder"};
+            "Predecessor", "Successor", "print preOrder"};
     private List blockedOptionsWhenEmpty = new ArrayList<>(Arrays.asList(2, 22, 7, 77, 8, 88));
 
     /**

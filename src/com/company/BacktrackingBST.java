@@ -57,7 +57,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     }
 
     public void delete(Node x) {
-        internalInsert(x, true);
+        internalDelete(x, true);
     }
 
     // String meaning:
@@ -295,16 +295,16 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
     }
 
     // TODO remove
-    public void treeFormPrint() {
+    public void treeFormPrint(){
         if (root != null) treeFormPrint(root, "");
         else System.out.println("Empty tree");
     }
 
     // TODO remove
-    private void treeFormPrint(Node node, String acc) {
+    private void treeFormPrint(Node node, String acc){
         String signSpace = acc + "            ";
         if (node.right != null) {
-            treeFormPrint(node.right, acc + "               ");
+            treeFormPrint(node.right, acc+"               ");
             if (node.right.parent == node)
                 System.out.println(signSpace + "/");
             else System.out.println(signSpace + "$");
@@ -315,7 +315,7 @@ public class BacktrackingBST implements Backtrack, ADTSet<BacktrackingBST.Node> 
             if (node.left.parent == node)
                 System.out.println(signSpace + "\\");
             else System.out.println(signSpace + "$");
-            treeFormPrint(node.left, acc + "               ");
+            treeFormPrint(node.left, acc+"               ");
         }
     }
 
